@@ -54,9 +54,9 @@ publishing {
         create<MavenPublication>("mavenJava") {
             from(components["java"])
             pom {
-                name.set("FhirTransformerCsvTransformer")
+                name.set("CaramelizerCsvTransformer")
                 description.set("A module for transforming FHIR data into CSV")
-                url.set("https://github.com/KI-AIM/FhirTransformer")
+                url.set("https://github.com/KI-AIM/Caramelizer")
 
                 licenses {
                     license {
@@ -71,7 +71,7 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/KI-AIM/FhirTransformer")
+            url = uri("https://maven.pkg.github.com/KI-AIM/Caramelizer")
             credentials {
                 username = System.getenv("GITHUB_ACTOR") ?: "unknown"
                 password = System.getenv("GITHUB_TOKEN") ?: "unknown"
