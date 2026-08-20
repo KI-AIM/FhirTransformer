@@ -8,10 +8,15 @@ buildscript {
     }
 }
 
+val projectVersion: String by project
+
+group = "de.unimuenster.imi.fhir"
+version = projectVersion
 
 plugins {
     kotlin("multiplatform")
     id("com.strumenta.antlr-kotlin") version "1.0.0"
+    id("maven-publish")
 }
 
 
@@ -25,6 +30,7 @@ repositories {
 }
 
 kotlin {
+    jvmToolchain(17)
     jvm {
         testRuns["test"].executionTask.configure {
             useJUnit()
@@ -110,3 +116,37 @@ tasks.withType<KotlinCompile>().configureEach {
 
 tasks.getByName("compileKotlinJvm").dependsOn(generateKotlinCommonGrammarSource)
 tasks.getByName("compileKotlinJs").dependsOn(generateKotlinCommonGrammarSource)
+tasks.getByName("jsSourcesJar").dependsOn(generateKotlinCommonGrammarSource)
+tasks.getByName("jvmSourcesJar").dependsOn(generateKotlinCommonGrammarSource)
+tasks.getByName("sourcesJar").dependsOn(generateKotlinCommonGrammarSource)
+
+
+publishing {
+    publications {
+        withType<MavenPublication> {
+            pom {
+                name.set("FhirTransformerColumnsParser")
+                description.set("A module for transforming data into tabular format")
+                url.set("https://maven.pkg.github.com/KI-AIM/FhirTransformer")
+
+                licenses {
+                    license {
+                        name.set("Apache-2.0")
+                        url.set("http://www.apache.org/licenses/LICENSE-2.0")
+                    }
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/KI-AIM/FhirTransformer")
+            credentials {
+                username = System.getenv("GITHUB_ACTOR") ?: "unknown"
+                password = System.getenv("GITHUB_TOKEN") ?: "unknown"
+            }
+        }
+    }
+}
