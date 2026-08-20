@@ -6,6 +6,10 @@ on:
       - master
   workflow_dispatch:
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   publish:
     name: Publish Standalone Modules
@@ -18,8 +22,8 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: temurin
+          java-version: "17"
 
       - name: Publish all modules
         env:
