@@ -12,11 +12,7 @@ class BundleTransformer(private val fhirContext: FhirContext) {
     private val log = KotlinLogging.logger("de.unimuenster.imi.fhir.transform.BundleTransformer")
     private val fhirClient = fhirContext.newRestfulGenericClient("http://local/fhir")
     private val jsonParser = fhirContext.newJsonParser()
-    private val fhirPathEngine = if (fhirContext.version.version == FhirVersionEnum.DSTU3) {
-        FhirPathEngineWrapperSTU3(fhirContext, fhirClient)
-    } else {
-        FhirPathEngineWrapperR4(fhirContext, fhirClient)
-    }
+    private val fhirPathEngine = FhirPathEngineWrapperR4(fhirContext, fhirClient)
 
     fun getResourceTypesInBundle(resourceString: String): Set<String> {
         val resource = readInResource(resourceString)

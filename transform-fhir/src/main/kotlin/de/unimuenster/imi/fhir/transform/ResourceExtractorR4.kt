@@ -137,14 +137,34 @@ class ResourceExtractorR4: ResourceExtractor() {
         dataType: StructureDefinition?,
         expression: String,
         name: String,
-        result: MutableList<Column>
+        result: MutableList<Column>,
+        visitedTypes: Set<String> = emptySet()
     ) {
         dataType?.snapshot?.element?.forEach { elementDefinition ->
             val subPath = removeResourceName(elementDefinition.path)
             if (elementDefinition.base?.path != "Element.id" && elementDefinition.path != dataType.id) {
                 val expression2 = "$expression.$subPath"
                 val newName = "$name.$subPath"
-                result.add(Column(removeResourceName(newName), expression2, this.processingMode))
+
+                if (expression2.contains("extension") || expression2.contains("modifierExtension")) {
+                    return@forEach
+                }
+
+                val nestedType = elementDefinition.type.firstOrNull()?.code?.let { getDataType(it) }
+                if (nestedType != null && nestedType.kind != StructureDefinition.StructureDefinitionKind.PRIMITIVETYPE && nestedType.snapshot != null) {
+                    val typeKey = nestedType.name
+                    if (typeKey !in visitedTypes) {
+                        addTypeElements(
+                            nestedType,
+                            expression2,
+                            newName,
+                            result,
+                            visitedTypes + typeKey
+                        )
+                    }
+                } else {
+                    result.add(Column(removeResourceName(newName), expression2, this.processingMode))
+                }
             }
         }
     }

@@ -20,7 +20,7 @@ abstract class ResourceExtractor {
         }
 
         fun forSTU3(): ResourceExtractor {
-            return ResourceExtractorSTU3()
+            return TODO()
         }
 
         fun forFhirContext(context: FhirContext): ResourceExtractor {
