@@ -30,6 +30,7 @@ repositories {
 }
 
 kotlin {
+    jvmToolchain(17)
     jvm {
         testRuns["test"].executionTask.configure {
             useJUnit()
@@ -124,9 +125,9 @@ publishing {
     publications {
         withType<MavenPublication> {
             pom {
-                name.set("FhirExtinguisherColumnsParser")
+                name.set("FhirTransformerColumnsParser")
                 description.set("A module for transforming data into tabular format")
-                url.set("https://github.com/JohannesOehm/FhirExtinguisher")
+                url.set("https://maven.pkg.github.com/KI-AIM/FhirTransformer")
 
                 licenses {
                     license {
@@ -141,7 +142,7 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/JohannesOehm/FhirExtinguisher")
+            url = uri("https://maven.pkg.github.com/KI-AIM/FhirTransformer")
             credentials {
                 username = System.getenv("GITHUB_ACTOR") ?: "unknown"
                 password = System.getenv("GITHUB_TOKEN") ?: "unknown"

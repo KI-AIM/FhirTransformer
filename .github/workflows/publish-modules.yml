@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - extinguisher-module #Remove before merging with master
   workflow_dispatch:
 
 jobs:
