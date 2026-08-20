@@ -1,4 +1,4 @@
-# FHIR CSV Transformer
+# Caramelizer
 
 This project is a fork of **[FHIRExtinguisher](https://github.com/JohannesOehm/FhirExtinguisher)** and builds on its existing FHIR transformation functionality.
 
